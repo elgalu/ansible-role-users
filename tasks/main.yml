@@ -105,3 +105,11 @@
   with_items: "{{ users_deleted }}"
   when: users_create_per_user_group
   tags: ["users", "configuration"]
+
+- name: Deleted group removal
+  ansible.builtin.group:
+    name: "{{ item.group_name }}"
+    gid: "{{ item.gid | default(omit) }}"
+    state: absent
+  with_items: "{{ groups_deleted }}"
+  tags: ["users", "groups", "configuration"]

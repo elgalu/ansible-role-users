@@ -23,5 +23,6 @@ users_deleted: []
 #     - name: developers
 #       gid: 20000
 groups_to_create: []
+groups_deleted: []
 
 authorized_keys_file: ".ssh/authorized_keys"
