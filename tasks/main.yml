@@ -50,6 +50,20 @@
   with_items: "{{ users }}"
   tags: ["users", "configuration"]
 
+# Ubuntu <21.04 will set, by default, user's home mode to 0755
+# (effectively allowing all users to read private files).
+# https://discourse.ubuntu.com/t/private-home-directories-for-ubuntu-21-04-onwards/19533
+# However, some systems need access to user's home files in order to work, e.g. fix via:
+#   setfacl -m u:libvirt-qemu:rx ${HOME}
+- name: ensure home folder is secured
+  ansible.builtin.file:
+    path: "{{ item.home | default('/home/' + item.username)  }}"
+    state: directory
+    mode: 0700
+  with_items: "{{ users }}"
+  when: users_create_homedirs
+  tags: ["users", "configuration"]
+
 - name: SSH keys
   authorized_key:
     user: "{{ item.0.username }}"
