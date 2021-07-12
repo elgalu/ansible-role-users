@@ -4,12 +4,12 @@
     path: /usr/sbin/visudo
   register: visudo
 
-- name: Allow admin group sudo without password
+- name: Allow sudo group sudo without password
   lineinfile:
     path: /etc/sudoers
     state: present
-    regexp: "^%admin ALL="
-    line: "%admin ALL=(ALL) NOPASSWD: ALL"
+    regexp: "^%sudo ALL="
+    line: "%sudo ALL=(ALL) NOPASSWD: ALL"
     validate: "/usr/sbin/visudo -cf %s"
   when: visudo.stat.exists
   tags: ["users", "groups", "configuration"]
